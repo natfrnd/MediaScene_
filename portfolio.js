@@ -25,7 +25,7 @@ const CLIENTS = [
     {
         name: "Corney",
         photo: "jpg/corney.webp",
-        video: "mp4/corney.mp4"
+        video: "https://drive.google.com/uc?id=1wVaD5v1D5gMX50jOOodeJcj-5Vu-udx5&export=view"
     },
 
     {
