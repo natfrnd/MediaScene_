@@ -7,7 +7,6 @@ const wordInner = document.getElementById("wordInner");
 const staticWord = document.getElementById("staticWord");
 
 const sceneButton = document.getElementById("sceneButton");
-const comingSoon = document.getElementById("comingSoon");
 
 const words = ["Coffee", "Food", "Music", "Punk", "Life", "My own"];
 
@@ -347,15 +346,30 @@ window.addEventListener("load", async () => {
 
 
 // ==========================
-// BUTTON: klik
+// BUTTON: klik -> halaman portfolio
 // ==========================
+
+let leaving = false;
 
 sceneButton.addEventListener("click", () => {
 
-    comingSoon.classList.add("show");
+    if (leaving) return;
+    leaving = true;
+
+    document.body.classList.add("leaving");
 
     setTimeout(() => {
-        comingSoon.classList.remove("show");
-    }, 2500);
+        window.location.href = "portfolio.html";
+    }, reduceMotion ? 0 : 450);
+
+});
+
+// Kalau user balik pakai tombol Back browser (halaman dipulihkan dari cache)
+window.addEventListener("pageshow", (event) => {
+
+    if (event.persisted) {
+        leaving = false;
+        document.body.classList.remove("leaving");
+    }
 
 });

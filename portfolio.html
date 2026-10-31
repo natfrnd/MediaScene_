@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Portfolio — Media Scene</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="portfolio.css">
+</head>
+
+<body>
+
+    <!-- Tirai putih: bikin transisi dari halaman depan terasa menyambung -->
+    <div class="curtain" aria-hidden="true"></div>
+
+    <!-- BACKGROUND: poster wall (diisi oleh portfolio.js) -->
+    <div class="poster-wall" id="posterWall" aria-hidden="true"></div>
+    <div class="scrim" aria-hidden="true"></div>
+
+    <a class="back-link" href="index.html">
+        <span aria-hidden="true">←</span> Back
+    </a>
+
+    <!-- CLIENT CARDS (diisi oleh portfolio.js) -->
+    <main class="clients">
+        <h1 class="visually-hidden">Clients</h1>
+        <div class="client-grid" id="clientGrid"></div>
+    </main>
+
+    <!-- NAVIGASI CARD -->
+    <div class="client-nav" id="clientNav">
+        <button class="nav-btn" id="prevBtn" aria-label="Previous client">←</button>
+        <span class="nav-count" id="navCount" aria-live="polite">01 / 01</span>
+        <button class="nav-btn" id="nextBtn" aria-label="Next client">→</button>
+    </div>
+
+    <script src="portfolio.js"></script>
+
+</body>
+
+</html>
