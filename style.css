@@ -1,21 +1,23 @@
+
 /* ==========================
    MEDIASCENE HOMEPAGE
 ========================== */
 
 /* GLOBAL */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 :root {
     --background: #ffffff;
     --text: #171717;
     --orange: #ff782e;
     --purple: #af52de;
+    --muted: #777777;
     --ease-ios: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 html,
@@ -25,25 +27,23 @@ body {
 }
 
 body {
+    overflow: hidden;
     background: var(--background);
     color: var(--text);
     font-family: Arial, sans-serif;
-    overflow: hidden;
 }
 
 
 /* HOMEPAGE */
 
 .homepage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100vh;
     height: 100dvh;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    position: relative;
     overflow: hidden;
 }
 
@@ -51,34 +51,31 @@ body {
 /* HERO */
 
 .hero-container {
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    text-align: center;
+    width: 100%;
     padding: 20px;
+    text-align: center;
 }
 
 
-/* ==========================
-   BUTTON: outline
-========================== */
+/* PORTFOLIO BUTTON */
 
 .scene-button {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    background: transparent;
-    color: var(--text);
+    margin-bottom: 30px;
+    padding: 13px 32px;
 
     border: 1.5px solid var(--text);
     border-radius: 50px;
 
-    padding: 13px 32px;
+    background: transparent;
+    color: var(--text);
 
     font-family: 'Poppins', Arial, sans-serif;
     font-size: 13px;
@@ -86,23 +83,20 @@ body {
     letter-spacing: 0.01em;
 
     cursor: pointer;
-    margin-bottom: 30px;
 
     transition:
         transform 0.45s var(--ease-ios),
         box-shadow 0.45s var(--ease-ios);
 }
 
-/* Cursor datang: naik sedikit + membesar tipis + bayangan lembut */
 .scene-button:hover,
 .scene-button:focus-visible {
     transform: translateY(-3px) scale(1.04);
     box-shadow: 0 10px 24px rgba(23, 23, 23, 0.12);
 }
 
-/* Pas diklik: "tertekan" sebentar */
 .scene-button:active {
-    transform: translateY(0) scale(0.98);
+    transform: scale(0.98);
     box-shadow: 0 2px 6px rgba(23, 23, 23, 0.1);
     transition-duration: 0.15s;
 }
@@ -111,35 +105,34 @@ body {
     display: inline-block;
 }
 
+
 /* MAIN TITLE */
 
 .main-title {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     gap: 0.12em;
 
+    color: var(--text);
     font-family: 'Poppins', sans-serif;
     font-size: clamp(42px, 8vw, 100px);
     font-weight: 600;
     letter-spacing: -0.065em;
     line-height: 1.2;
 
-    color: var(--text);
     white-space: nowrap;
 }
 
 
-/* WORD AREA (lebar ngikutin kata, diatur lewat JS) */
+/* CHANGING WORD */
 
 .changing-word {
     position: relative;
     display: block;
-
+    flex-shrink: 0;
     width: 0;
     height: 1.2em;
-    flex-shrink: 0;
-
     transition: width 0.56s var(--ease-ios);
 }
 
@@ -153,40 +146,42 @@ body {
     transition: color 0.3s ease;
 }
 
-/* FINAL WORD ("My own") */
-
 .word-inner.final-word {
     color: var(--purple);
 }
 
-/* "Scene" (diketik pas intro) */
+
+/* STATIC WORD */
 
 .static-word {
-    display: inline-block;
     position: relative;
+    display: inline-block;
     flex-shrink: 0;
     height: 1.2em;
 }
 
 
-/* KURSOR KETIK */
+/* TYPING CURSOR */
 
 .typing::after {
-    content: "";
     position: absolute;
-    left: 100%;
     top: 0.14em;
+    left: 100%;
 
     width: 0.05em;
     height: 0.95em;
     margin-left: 0.05em;
 
     background: var(--orange);
+    content: "";
+
     animation: caretBlink 0.9s steps(1) infinite;
 }
 
 @keyframes caretBlink {
-    50% { opacity: 0; }
+    50% {
+        opacity: 0;
+    }
 }
 
 
@@ -197,10 +192,9 @@ body {
     align-items: center;
     justify-content: center;
     gap: 7px;
-
     margin-top: 20px;
 
-    color: #777;
+    color: var(--muted);
     font-size: 12px;
     text-decoration: none;
 
@@ -212,48 +206,28 @@ body {
 }
 
 
-/* TRANSISI KELUAR (pas klik Portfolio) */
-
-.homepage {
-    transition:
-        opacity 0.45s var(--ease-ios),
-        transform 0.45s var(--ease-ios),
-        filter 0.45s var(--ease-ios);
-}
-
-body.leaving .homepage {
-    opacity: 0;
-    transform: scale(0.97);
-    filter: blur(8px);
-}
-
-
 /* MOBILE */
 
 @media (max-width: 600px) {
-
     .main-title {
+        gap: 0.12em;
         font-size: clamp(35px, 9vw, 55px);
         letter-spacing: -0.06em;
-        gap: 0.12em;
     }
 
     .scene-button {
         margin-bottom: 25px;
     }
-
 }
 
 
 /* REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {
-
     *,
     *::before,
     *::after {
         animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
     }
-
 }

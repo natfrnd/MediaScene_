@@ -1,325 +1,540 @@
-// ==========================
-// PORTFOLIO PAGE
-// ==========================
-
 
 // ==========================
-// 1) FOTO HASIL PORTO (background)
-// Taruh file di folder "images/" (sejajar dengan portfolio.html),
-// lalu tulis namanya di sini. Contoh:
-//   "images/poster-01.webp",
-// Kalau masih kosong, background pakai tile warna placeholder.
+// MEDIASCENE — PORTFOLIO PAGE
 // ==========================
-
-const POSTERS = [
-    // "images/poster-01.webp",
-    // "images/poster-02.webp",
-];
 
 
 // ==========================
-// 2) CLIENT (1 baris card besar, geser kiri/kanan)
-// Opsional per client:
-//   status: "Ongoing" atau "Past"   -> muncul badge kecil
-//   url: "https://..."              -> card jadi bisa diklik
+// 1. CLIENT DATA
 // ==========================
 
 const CLIENTS = [
-    { name: "Lekker" },
-    { name: "Runguu" },
-    { name: "CanHouse" },
-    { name: "Client 04" },   // <- ganti dengan nama client asli
-    { name: "Client 05" },
-    { name: "Client 06" },
-    { name: "Client 07" },
-    { name: "Client 08" },
-    { name: "Client 09" }
+
+    {
+        name: "Lekker 88",
+        photo: "jpg/lekker88.webp",
+        video: "mp4/lekker88.mp4"
+    },
+
+    {
+        name: "Sama Space",
+        photo: "jpg/samaspace.webp",
+        video: "mp4/samaspace.mp4"
+    },
+
+    {
+        name: "Corney",
+        photo: "jpg/corney.webp",
+        video: "mp4/corney.mp4"
+    },
+
+    {
+        name: "Press",
+        photo: "jpg/press.webp",
+        video: "mp4/press.mp4"
+    },
+
+    { name: "@runggubpn" },
+    { name: "@crow.bpn" },
+    { name: "@kofeeyakopi" },
+    { name: "batakancorner" },
+    { name: "warkopagammedan.batakan" },
+    { name: "taichansenayanbangono" },
+    { name: "@corney.idn" },
+    { name: "@chemyst.coffee" }
+
 ];
 
 
 // ==========================
-// BACKGROUND WALL
+// 2. ELEMENTS
 // ==========================
 
-const wall = document.getElementById("posterWall");
 const grid = document.getElementById("clientGrid");
 
-const GAP = 18;
-
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-function placeholderGradient(col, row) {
-
-    const hue = (col * 47 + row * 71) % 360;
-
-    return `linear-gradient(160deg, hsl(${hue} 58% 58%), hsl(${(hue + 42) % 360} 62% 36%))`;
-
-}
-
-function makeTile(col, row) {
-
-    const tile = document.createElement("div");
-    tile.className = "tile";
-
-    const tilt = ((col + row) % 2 ? -1 : 1) * (1 + ((col * row) % 3) * 0.4);
-    tile.style.setProperty("--r", `${tilt}deg`);
-
-    const usePlaceholder = () => {
-        tile.classList.add("ph");
-        tile.style.background = placeholderGradient(col, row);
-    };
-
-    if (POSTERS.length) {
-
-        const img = document.createElement("img");
-
-        img.src = POSTERS[(col * 5 + row) % POSTERS.length];
-        img.alt = "";
-        img.draggable = false;
-        img.loading = "lazy";
-        img.decoding = "async";
-
-        img.addEventListener("error", () => {
-            img.remove();
-            usePlaceholder();
-        });
-
-        tile.appendChild(img);
-
-    } else {
-
-        usePlaceholder();
-
-    }
-
-    return tile;
-
-}
-
-let lastWidth = 0;
-
-function buildWall() {
-
-    lastWidth = window.innerWidth;
-
-    wall.textContent = "";
-
-    const colW = Math.min(Math.max(window.innerWidth * 0.15, 120), 240);
-    const cols = Math.ceil((window.innerWidth * 1.7) / (colW + GAP));
-
-    // tinggi visual 1 tile (aspect 2:3, dikurangi overlap 10%)
-    const tileH = colW * 1.4;
-    const perHalf = Math.max(4, Math.ceil((window.innerHeight * 1.8) / tileH));
-
-    wall.style.setProperty("--col-w", `${colW}px`);
-    wall.style.setProperty("--gap", `${GAP}px`);
-
-    const tilt = document.createElement("div");
-    tilt.className = "poster-tilt";
-
-    for (let c = 0; c < cols; c++) {
-
-        const col = document.createElement("div");
-        col.className = "poster-col";
-        col.style.setProperty("--i", c);
-        col.style.setProperty("--from", c % 2 ? "-70px" : "70px");
-
-        const track = document.createElement("div");
-        track.className = "poster-track " + (c % 2 ? "down" : "up");
-        track.style.setProperty("--dur", `${64 + (c % 3) * 12}s`);
-
-        // 2 paruh identik -> loop mulus tanpa lompatan
-        for (let half = 0; half < 2; half++) {
-            for (let r = 0; r < perHalf; r++) {
-                track.appendChild(makeTile(c, r));
-            }
-        }
-
-        col.appendChild(track);
-        tilt.appendChild(col);
-
-    }
-
-    wall.appendChild(tilt);
-
-}
-
-
-// ==========================
-// CLIENT CARDS (1 baris besar, geser horizontal)
-// Cara geser: panah di bawah, keyboard kiri/kanan, scroll mouse,
-// swipe di HP/trackpad, atau klik card di sampingnya.
-// ==========================
-
-const scroller = grid;
-const clientsMain = document.querySelector(".clients");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const navCount = document.getElementById("navCount");
 
-const cards = [];
+const clientsMain = document.querySelector(".clients");
 
-let target = 0;          // card yang dituju
-let visual = -1;         // card yang lagi aktif secara visual
+const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+).matches;
+
+
+// Pastikan elemen tersedia
+
+if (!grid || !prevBtn || !nextBtn || !navCount) {
+    throw new Error("Media Scene: Portfolio elements not found.");
+}
+
+
+// ==========================
+// 3. STATE
+// ==========================
+
+const cards = [];
+const videos = [];
+
+let target = 0;
+let visual = -1;
+
 let programmatic = false;
 let idleTimer;
+let wheelLock = false;
 
-const pad = (n) => String(n).padStart(2, "0");
-const clampIndex = (i) => Math.max(0, Math.min(cards.length - 1, i));
+const pad = number =>
+    String(number).padStart(2, "0");
+
+const clampIndex = index =>
+    Math.max(0, Math.min(cards.length - 1, index));
 
 const stepSize = () =>
-    cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : 1;
+    cards.length > 1
+        ? cards[1].offsetLeft - cards[0].offsetLeft
+        : 1;
 
-function setActive(index) {
 
-    if (index === visual) return;
-    visual = index;
+// ==========================
+// 4. PLACEHOLDER
+// ==========================
 
-    cards.forEach((card, i) => card.classList.toggle("is-active", i === index));
+function placeholderGradient(index) {
 
-    navCount.textContent = `${pad(index + 1)} / ${pad(cards.length)}`;
-    prevBtn.disabled = index === 0;
-    nextBtn.disabled = index === cards.length - 1;
+    const gradients = [
+        "linear-gradient(135deg, #e8e8e8, #cfcfcf)",
+        "linear-gradient(135deg, #dedede, #bdbdbd)",
+        "linear-gradient(135deg, #ededed, #d2d2d2)",
+        "linear-gradient(135deg, #e5e5e5, #c5c5c5)"
+    ];
 
-}
-
-// Dipanggil saat scroll berhenti: sinkronkan state dengan posisi asli
-function syncToScroll() {
-
-    programmatic = false;
-
-    const i = clampIndex(Math.round(scroller.scrollLeft / stepSize()));
-    target = i;
-    setActive(i);
+    return gradients[index % gradients.length];
 
 }
 
-function go(index, instant = false) {
 
-    target = clampIndex(index);
-    programmatic = true;
+// ==========================
+// 5. CARD MEDIA
+// ==========================
 
-    scroller.scrollTo({
-        left: target * stepSize(),
-        behavior: instant || reduceMotion ? "auto" : "smooth"
+function addPhoto(face, client, index) {
+
+    if (!client.photo) return;
+
+    const img = document.createElement("img");
+
+    img.className = "card-photo";
+    img.src = client.photo;
+    img.alt = `${client.name} portfolio`;
+    img.draggable = false;
+    img.decoding = "async";
+
+    img.loading = index === 0 ? "eager" : "lazy";
+
+    img.addEventListener("error", () => {
+        img.remove();
     });
 
-    setActive(target);
-
-    // cadangan kalau ga ada event scroll (posisi sudah di tempat)
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(syncToScroll, 900);
+    face.appendChild(img);
 
 }
+
+
+function addVideo(face, client, index) {
+
+    if (!client.video) {
+        addPhoto(face, client, index);
+        videos[index] = null;
+        return;
+    }
+
+    const video = document.createElement("video");
+
+    video.className = "card-photo card-video";
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.loop = true;
+    video.playsInline = true;
+
+    video.preload = "none";
+    video.disablePictureInPicture = true;
+
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+    video.setAttribute("aria-hidden", "true");
+
+    if (client.photo) {
+        video.poster = client.photo;
+    }
+
+    video.dataset.src = client.video;
+
+    video.addEventListener("error", () => {
+
+        video.remove();
+
+        videos[index] = null;
+
+        addPhoto(face, client, index);
+
+    });
+
+    face.appendChild(video);
+
+    videos[index] = video;
+
+}
+
+
+// ==========================
+// 6. BUILD CLIENT CARDS
+// ==========================
 
 function buildClients() {
 
-    CLIENTS.forEach((client, i) => {
+    grid.textContent = "";
+
+    cards.length = 0;
+    videos.length = 0;
+
+    CLIENTS.forEach((client, index) => {
+
+        // Card container
 
         const slot = document.createElement("div");
-        slot.className = "client-card";
-        slot.style.setProperty("--i", i);
 
-        const face = document.createElement(client.url ? "a" : "article");
+        slot.className = "client-card";
+
+
+        // Card face
+
+        const face = document.createElement(
+            client.url ? "a" : "article"
+        );
+
         face.className = "card-face";
 
+        face.style.background = placeholderGradient(index);
+
+
+        // Optional external link
+
         if (client.url) {
+
             face.href = client.url;
             face.target = "_blank";
             face.rel = "noopener noreferrer";
+
         }
+
+
+        // Add video or photo
+
+        addVideo(face, client, index);
+
+
+        // Card top content
 
         const top = document.createElement("div");
+
         top.className = "card-top";
 
-        const index = document.createElement("span");
-        index.textContent = pad(i + 1);
-        top.appendChild(index);
 
         if (client.status) {
+
             const status = document.createElement("span");
+
             status.className = "card-status";
             status.textContent = client.status;
+
             top.appendChild(status);
+
         } else if (client.url) {
+
             const arrow = document.createElement("span");
+
             arrow.className = "card-arrow";
             arrow.textContent = "↗";
+
             top.appendChild(arrow);
+
         }
 
+
+        // Client name
+
         const name = document.createElement("h2");
+
         name.className = "card-name";
         name.textContent = client.name;
 
+
         face.append(top, name);
+
         slot.appendChild(face);
 
-        // Klik card di samping -> geser ke card itu (bukan buka link-nya)
-        slot.addEventListener("click", (event) => {
-            if (i !== visual) {
+
+        // Click inactive card to navigate to it
+
+        slot.addEventListener("click", event => {
+
+            if (index !== visual) {
+
                 event.preventDefault();
-                go(i);
+
+                go(index);
+
             }
+
         });
 
+
         grid.appendChild(slot);
+
         cards.push(slot);
 
     });
+
 
     setActive(0);
 
 }
 
 
-// Swipe / drag / trackpad horizontal (native) -> update state
-scroller.addEventListener("scroll", () => {
+// ==========================
+// 7. VIDEO PLAYBACK
+// ==========================
+
+function updateVideos() {
+
+    videos.forEach(video => {
+
+        if (!video) return;
+
+
+        // Load video if not loaded
+
+        if (!video.getAttribute("src")) {
+
+            video.preload = "auto";
+            video.src = video.dataset.src;
+
+            video.load();
+
+        }
+
+
+        // Keep videos playing
+
+        if (!reduceMotion && !document.hidden) {
+
+            const playing = video.play();
+
+            if (playing) {
+                playing.catch(() => {});
+            }
+
+        } else {
+
+            video.pause();
+
+        }
+
+    });
+
+}
+
+
+// ==========================
+// 8. ACTIVE CARD
+// ==========================
+
+function setActive(index) {
+
+    if (!cards.length) return;
+
+    index = clampIndex(index);
+
+    if (index === visual) return;
+
+    visual = index;
+
+
+    // Update navigation counter
+
+    navCount.textContent =
+        `${pad(index + 1)} / ${pad(cards.length)}`;
+
+
+    // Update navigation buttons
+
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === cards.length - 1;
+
+
+    // Update video playback
+
+    updateVideos();
+
+}
+
+
+// ==========================
+// 9. NAVIGATION
+// ==========================
+
+function syncToScroll() {
+
+    if (!cards.length) return;
+
+    programmatic = false;
+
+    const index = clampIndex(
+        Math.round(grid.scrollLeft / stepSize())
+    );
+
+    target = index;
+
+    setActive(index);
+
+}
+
+
+function go(index, instant = false) {
+
+    if (!cards.length) return;
+
+    target = clampIndex(index);
+
+    programmatic = true;
+
+    grid.scrollTo({
+
+        left: target * stepSize(),
+
+        behavior: instant || reduceMotion
+            ? "auto"
+            : "smooth"
+
+    });
+
+    setActive(target);
+
+
+    // Fallback synchronization
+
+    clearTimeout(idleTimer);
+
+    idleTimer = setTimeout(syncToScroll, 900);
+
+}
+
+
+// ==========================
+// 10. SCROLL & SWIPE
+// ==========================
+
+grid.addEventListener("scroll", () => {
 
     if (!programmatic) {
-        setActive(clampIndex(Math.round(scroller.scrollLeft / stepSize())));
+
+        const index = clampIndex(
+            Math.round(grid.scrollLeft / stepSize())
+        );
+
+        setActive(index);
+
     }
 
     clearTimeout(idleTimer);
+
     idleTimer = setTimeout(syncToScroll, 140);
 
 }, { passive: true });
 
-prevBtn.addEventListener("click", () => go(target - 1));
-nextBtn.addEventListener("click", () => go(target + 1));
 
-document.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowRight") go(target + 1);
-    if (event.key === "ArrowLeft") go(target - 1);
+// ==========================
+// 11. BUTTON CONTROLS
+// ==========================
+
+prevBtn.addEventListener("click", () => {
+    go(target - 1);
 });
 
-// Scroll mouse (vertikal) -> pindah 1 card per gulir
-let wheelLock = false;
+nextBtn.addEventListener("click", () => {
+    go(target + 1);
+});
 
-clientsMain.addEventListener("wheel", (event) => {
 
-    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+// ==========================
+// 12. KEYBOARD CONTROLS
+// ==========================
+
+document.addEventListener("keydown", event => {
+
+    if (event.key === "ArrowRight") {
+        go(target + 1);
+    }
+
+    if (event.key === "ArrowLeft") {
+        go(target - 1);
+    }
+
+});
+
+
+// ==========================
+// 13. MOUSE WHEEL
+// ==========================
+
+clientsMain.addEventListener("wheel", event => {
+
+    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
+        return;
+    }
 
     event.preventDefault();
 
-    if (wheelLock || Math.abs(event.deltaY) < 8) return;
+    if (wheelLock || Math.abs(event.deltaY) < 8) {
+        return;
+    }
 
     wheelLock = true;
+
     go(target + Math.sign(event.deltaY));
 
-    setTimeout(() => { wheelLock = false; }, 650);
+    setTimeout(() => {
+        wheelLock = false;
+    }, 650);
 
 }, { passive: false });
 
 
 // ==========================
-// START
+// 14. PAGE VISIBILITY
 // ==========================
 
-buildWall();
+document.addEventListener("visibilitychange", () => {
+
+    updateVideos();
+
+});
+
+
+// ==========================
+// 15. INITIALIZE
+// ==========================
+
 buildClients();
 
-// Resize: rebuild wall kalau lebar berubah jauh, card tetap di tengah
+
+// ==========================
+// 16. RESIZE
+// ==========================
+
 let resizeTimer;
 
 window.addEventListener("resize", () => {
@@ -327,8 +542,9 @@ window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
 
     resizeTimer = setTimeout(() => {
-        if (Math.abs(window.innerWidth - lastWidth) > 60) buildWall();
+
         go(target, true);
+
     }, 250);
 
 });
