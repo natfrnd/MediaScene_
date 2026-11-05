@@ -12,22 +12,22 @@ const CLIENTS = [
     {
         name: "Lekker 88",
         photo: "jpg/lekker88.webp",
-        video: "lekker88.mp4"
+        video: "MP4/lekker88.mp4"
     },
     {
         name: "Sama Space",
         photo: "jpg/samaspace.webp",
-        video: "samaspace.mp4"
+        video: "MP4/samaspace.mp4"
     },
     {
         name: "Corney",
         photo: "jpg/corney.webp",
-        video: "corney.mp4"
+        video: "MP4/corney.mp4"
     },
     {
         name: "Press",
         photo: "jpg/press.webp",
-        video: "press.mp4"
+        video: "MP4/press.mp4"
     }
 ];
 
