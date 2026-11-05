@@ -9,39 +9,26 @@
 // ==========================
 
 const CLIENTS = [
-
     {
         name: "Lekker 88",
         photo: "jpg/lekker88.webp",
-        video: "mp4/lekker88.mp4"
+        video: "lekker88.mp4"
     },
-
     {
         name: "Sama Space",
         photo: "jpg/samaspace.webp",
-        video: "mp4/samaspace.mp4"
+        video: "samaspace.mp4"
     },
-
     {
         name: "Corney",
         photo: "jpg/corney.webp",
         video: "corney.mp4"
     },
-
     {
         name: "Press",
         photo: "jpg/press.webp",
-        video: "mp4/press.mp4"
-    },
-
-    { name: "@runggubpn" },
-    { name: "@crow.bpn" },
-    { name: "@kofeeyakopi" },
-    { name: "batakancorner" },
-    { name: "warkopagammedan.batakan" },
-    { name: "taichansenayanbangono" },
-    { name: "@chemyst.coffee" }
-
+        video: "press.mp4"
+    }
 ];
 
 
