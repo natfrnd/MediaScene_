@@ -1,0 +1,233 @@
+
+/* ==========================
+   MEDIASCENE HOMEPAGE
+========================== */
+
+/* GLOBAL */
+
+:root {
+    --background: #ffffff;
+    --text: #171717;
+    --orange: #ff782e;
+    --purple: #af52de;
+    --muted: #777777;
+    --ease-ios: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    overflow: hidden;
+    background: var(--background);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+}
+
+
+/* HOMEPAGE */
+
+.homepage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+}
+
+
+/* HERO */
+
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+}
+
+
+/* PORTFOLIO BUTTON */
+
+.scene-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    padding: 13px 32px;
+
+    border: 1.5px solid var(--text);
+    border-radius: 50px;
+
+    background: transparent;
+    color: var(--text);
+
+    font-family: 'Poppins', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.45s var(--ease-ios),
+        box-shadow 0.45s var(--ease-ios);
+}
+
+.scene-button:hover,
+.scene-button:focus-visible {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 10px 24px rgba(23, 23, 23, 0.12);
+}
+
+.scene-button:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 6px rgba(23, 23, 23, 0.1);
+    transition-duration: 0.15s;
+}
+
+.scene-label {
+    display: inline-block;
+}
+
+
+/* MAIN TITLE */
+
+.main-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.12em;
+
+    color: var(--text);
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(42px, 8vw, 100px);
+    font-weight: 600;
+    letter-spacing: -0.065em;
+    line-height: 1.2;
+
+    white-space: nowrap;
+}
+
+
+/* CHANGING WORD */
+
+.changing-word {
+    position: relative;
+    display: block;
+    flex-shrink: 0;
+    width: 0;
+    height: 1.2em;
+    transition: width 0.56s var(--ease-ios);
+}
+
+.word-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    white-space: nowrap;
+    will-change: transform, opacity, filter;
+    transition: color 0.3s ease;
+}
+
+.word-inner.final-word {
+    color: var(--purple);
+}
+
+
+/* STATIC WORD */
+
+.static-word {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+    height: 1.2em;
+}
+
+
+/* TYPING CURSOR */
+
+.typing::after {
+    position: absolute;
+    top: 0.14em;
+    left: 100%;
+
+    width: 0.05em;
+    height: 0.95em;
+    margin-left: 0.05em;
+
+    background: var(--orange);
+    content: "";
+
+    animation: caretBlink 0.9s steps(1) infinite;
+}
+
+@keyframes caretBlink {
+    50% {
+        opacity: 0;
+    }
+}
+
+
+/* INSTAGRAM CREDIT */
+
+.instagram-credit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 20px;
+
+    color: var(--muted);
+    font-size: 12px;
+    text-decoration: none;
+
+    transition: color 0.3s ease;
+}
+
+.instagram-credit:hover {
+    color: var(--orange);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+    .main-title {
+        gap: 0.12em;
+        font-size: clamp(35px, 9vw, 55px);
+        letter-spacing: -0.06em;
+    }
+
+    .scene-button {
+        margin-bottom: 25px;
+    }
+}
+
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}

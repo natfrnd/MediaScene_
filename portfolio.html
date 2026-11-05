@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Portfolio — Media Scene</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="portfolio.css">
+</head>
+
+<body>
+
+    <a class="back-link" href="index.html">
+        <span aria-hidden="true">←</span>
+        Back
+    </a>
+
+    <main class="clients">
+
+        <h1 class="visually-hidden">Clients</h1>
+
+        <div class="client-grid" id="clientGrid"></div>
+
+    </main>
+
+    <nav class="client-nav" id="clientNav" aria-label="Portfolio navigation">
+
+        <button
+            class="nav-btn"
+            id="prevBtn"
+            type="button"
+            aria-label="Previous client"
+        >
+            ←
+        </button>
+
+        <span class="nav-count" id="navCount" aria-live="polite">
+            01 / 01
+        </span>
+
+        <button
+            class="nav-btn"
+            id="nextBtn"
+            type="button"
+            aria-label="Next client"
+        >
+            →
+        </button>
+
+    </nav>
+
+    <script src="portfolio.js"></script>
+
+</body>
+</html>
